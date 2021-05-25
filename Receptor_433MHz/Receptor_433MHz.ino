@@ -1,12 +1,32 @@
-// RF LINK RECEIVER CODE
-#include <VirtualWire.h>
+/*
+  Project :Receptor_433MHz con Arduino
+  Version : 1.0
+  Date    : 24/05/2021 - 25/05/2021
+  Author  : CARLOS ANDRES BETANCOURT PEREZ
+  Company : CaliBeta
+  Comments:
+  Chip type               : ATmega328P-AU
+  Program type            : Application
+  AVR Core Clock frequency: 16.000000 MHz
+  Memory model            : Small
+  External RAM size       : 0
+  ------------------------------------------------------------
+  Conexiones electricas
+  Revisar los diagramas de Fritzing
+  //----------------------------------------------------------*/
 
+//Incluimos las librerias necesarias
+#include <VirtualWire.h>
+#include "Config.h"
+//----------------------------------------------------------
+
+//Declaramos las variables globales
 int brillo = 0;
 float vBat = 0.0;
 
 void setup() {
   Serial.begin(115200);	// Debugging only
-  Serial.println("Initialize RF Link Rx Code");
+  Serial.println("Inicializado Receptor RF");
 
   //Initialize the IO and ISR
   //vw_set_ptt_inverted(true); // Required for DR3100
@@ -18,9 +38,16 @@ void setup() {
   pinMode(8, OUTPUT);
 
   //Set pin for LED as status indicator
-  pinMode (13, OUTPUT);
+  pinMode (LED1, OUTPUT);
+  pinMode (LED2, OUTPUT);
+  pinMode (LED3, OUTPUT);
 
+  //Estado inicial de los pines de salida
+  digitalWrite(LED1, LOW);
+  digitalWrite(LED2, LOW);
+  digitalWrite(LED3, LOW);
 }
+//----------------------------------------------------------
 
 void loop() {
   //Set buffer array based on max message length
@@ -32,9 +59,9 @@ void loop() {
   //verificamos si hay un dato valido en el RF
   if (vw_get_message(buf, &buflen)) { // Non-blocking
     // Flash status LED to show received data
-    digitalWrite(13, true);
+    digitalWrite(LED1, HIGH);
     // Message with a good checksum received, dump it.
-    Serial.print("Received message: ");
+    Serial.print("Mensaje recibido: ");
     String data = "";
     uint8_t dato = 0;
 
@@ -61,14 +88,18 @@ void loop() {
         vBat = data.toFloat();
       }
     }
-    //Print next character on new line
+
+    //Imprimimos los datos decodificados en una nueva linea
     Serial.println();
     Serial.print("Datos decodificados Brillo:");
     Serial.print(brillo);
     Serial.print(" vBat:");
     Serial.println(vBat);
 
-    //Turn off status LED
-    digitalWrite(13, false);
+    //Apagamos el led de estatus
+    digitalWrite(LED1, LOW);
   }
+  //Cambiamos el estado de los leds acorde a los datos recibidos
+  salidas(LED3, LED2);
 }
+//----------------------------------------------------------

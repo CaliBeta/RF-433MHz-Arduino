@@ -23,7 +23,7 @@
 //Configuracion
 void setup() {
   Serial.begin(115200);	  //Para debugging
-  Serial.println("Initialize RF Link Tx Code");
+  Serial.println("Inicializado Transmisor RF");
 
   //Configuramos los parametros del modulo RF
   vw_setup(BAUDRATE);	   //tasa de bits por segundo

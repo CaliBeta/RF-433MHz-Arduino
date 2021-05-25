@@ -24,8 +24,7 @@ float leerADC(uint8_t pin, float vMax, int offset, bool divisor) {
 //Para debugging por puerto serie
 void tx_debug(char *temp_msg) {
   //output to serial monitor to indicate which button pressed
-  Serial.print("Button was pressed, sending msg = ");
+  Serial.print("Boton presionado, enviando mensaje: ");
   Serial.println(temp_msg);
 }
 //-------------------------------------------------------------
-//----------------------------------------------------------

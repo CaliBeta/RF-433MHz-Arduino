@@ -2,21 +2,18 @@
 #define __COnfig_H__
 
 //Pulsador
-#define PUSH      3
-
-//Sensor de temperatura DS18B20
-#define SENSOR    10
+#define PUSH          3     //Pulsador para envio de datos
 
 //Pines analogos
-#define VBAT      A3  //Medidor voltaje bateria
-#define BRILLO    A0  //Brillo del led a controlar
+#define VBAT          A3    //Medidor voltaje bateria
+#define BRILLO        A0    //Brillo del led a controlar
 
 //LED indicador
-#define LED       13
+#define LED           13    //led Estado del transmisor
 
 //Enlace RF 433MHz
-#define DATA      4
-#define BAUDRATE  2000
+#define DATA          4     //pin de datos
+#define BAUDRATE      2000  //velocidad de transmision bits/seg, max=4800
 
 //Medidor bateria
 #define LECTURAS      10      //Numero de lecturas para el promedio
