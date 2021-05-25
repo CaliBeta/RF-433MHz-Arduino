@@ -28,14 +28,10 @@ void setup() {
   Serial.begin(115200);	// Debugging only
   Serial.println("Inicializado Receptor RF");
 
-  //Initialize the IO and ISR
-  //vw_set_ptt_inverted(true); // Required for DR3100
-  vw_setup(2000);	    // Bits per sec
-  vw_set_rx_pin(3);         //Pin 3 is connected to "Digital Output" of receiver
-  vw_rx_start();           // Start the receiver PLL running
-
-  //Set pins for LED Output
-  pinMode(8, OUTPUT);
+  //Configuramos los parametros del modulo RF
+  vw_setup(BAUDRATE);	    //tasa de bits por segundo
+  vw_set_rx_pin(DATA);    //Pin de datos del modulo receptor
+  vw_rx_start();          //Inicio el receptor activando el PLL
 
   //Set pin for LED as status indicator
   pinMode (LED1, OUTPUT);
