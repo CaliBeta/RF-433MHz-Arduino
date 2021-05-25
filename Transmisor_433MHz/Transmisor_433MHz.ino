@@ -41,23 +41,25 @@ void setup() {
 //Funcion principal
 void loop() {
   if (digitalRead(PUSH) == LOW) {
-    digitalWrite(13, true);  //Flash status LED to show transmitting
+    digitalWrite(LED, HIGH);  //ENcendemos el led mientras se envian datos
 
     int brillo = analogRead(BRILLO);
     brillo = map(brillo, 0, 1023, 0, 255);
+    float vbat = leerADC(VBAT, VCC, OFFSET, true);
 
-    char *msg = "*51,2,20,6,3#"; //message to send
-    tx_debug(msg); //output message to serial monitor for debugging.
-    vw_send((uint8_t *)msg, strlen(msg));//send message
-    vw_wait_tx(); // Wait until the whole message is gone
+    char buf[VW_MAX_MESSAGE_LEN]; // Cadena para enviar
+    String str = "";
 
-    digitalWrite(13, false); //Turn off status LED
+    //convertimos el int a String y agregamos un inicio de trama
+    str = "b" + String(brillo);
+    //Convertimos el float a String y agregamos un fin de trama
+    str += "v" + String(vbat) + "#";
+    str.toCharArray(buf, sizeof(buf)); //convertimos el String en un array
+    tx_debug(buf); //Mensaje de salida al monitor serial para debugging
+    vw_send((uint8_t *)buf, strlen(buf));//Enviamos los datos
+    vw_wait_tx(); //Esperamos hasta que el mensaje se envie
+
+    digitalWrite(LED, LOW); //Apagamos el LED de estatus
   }
-}
-
-void tx_debug(char *temp_msg) {
-  //output to serial monitor to indicate which button pressed
-  Serial.print("Button was pressed, sending msg = ");
-  Serial.println(temp_msg);
 }
 //----------------------------------------------------------
